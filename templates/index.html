@@ -1,0 +1,116 @@
+{% extends 'layout.html' %}
+
+{% block title %}Dashboard - Financeiro{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <div>
+            <span class="label-top">Dashboard</span>
+            <h2>Controle de movimentações</h2>
+            <p class="texto-pequeno">Aqui você vê saldo, adiciona entradas e gastos, e acompanha suas últimas movimentações.</p>
+        </div>
+    </div>
+
+    <section class="stats">
+        <div class="cards-stats">
+            <article class="card card-saldo">
+                <div class="card-icone">💵</div>
+                <div class="card-info">
+                    <p class="card-label">Saldo Total</p>
+                    <p class="card-valor" id="saldo">R$ 0,00</p>
+                </div>
+            </article>
+
+            <article class="card card-entrada">
+                <div class="card-icone">📈</div>
+                <div class="card-info">
+                    <p class="card-label">Total Entradas</p>
+                    <p class="card-valor" id="entradas">R$ 0,00</p>
+                </div>
+            </article>
+
+            <article class="card card-gasto">
+                <div class="card-icone">📉</div>
+                <div class="card-info">
+                    <p class="card-label">Total Gastos</p>
+                    <p class="card-valor" id="gastos">R$ 0,00</p>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <section class="adicionar-secao">
+        <div class="section-header">
+            <h3>Adicionar movimentação</h3>
+            <p class="texto-pequeno">Preencha o formulário com cuidado para manter as contas em dia.</p>
+        </div>
+
+        <form class="formulario" id="formulario">
+            <div class="form-group">
+                <label for="tipo">Tipo</label>
+                <select id="tipo" required>
+                    <option value="">Selecione o tipo</option>
+                    <option value="ENTRADA">Entrada</option>
+                    <option value="GASTO">Gasto</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="categoria">Categoria</label>
+                <select id="categoria" required>
+                    <option value="">Selecione a categoria</option>
+                    {% for categoria in categorias %}
+                        <option value="{{ categoria }}">{{ categoria }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="valor">Valor</label>
+                <input type="number" id="valor" placeholder="100.00" step="0.01" min="0" required>
+            </div>
+
+            <div class="form-group">
+                <label for="data">Data</label>
+                <input type="date" id="data" required>
+            </div>
+
+            <div class="form-group descricao-group">
+                <label for="descricao">Descrição</label>
+                <input type="text" id="descricao" placeholder="Ex: Supermercado, salário, Netflix">
+            </div>
+
+            <button type="submit" class="btn-primario">Adicionar</button>
+        </form>
+
+        <div class="mensagem" id="mensagem" style="display:none;"></div>
+    </section>
+
+    <section class="movimentacoes-secao">
+        <div class="section-header">
+            <h3>Movimentações recentes</h3>
+            <p class="texto-pequeno">As últimas movimentações aparecem primeiro para você controlar melhor.</p>
+        </div>
+
+        <div class="tabela-container">
+            <table class="tabela">
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Tipo</th>
+                        <th>Categoria</th>
+                        <th>Descrição</th>
+                        <th>Valor</th>
+                        <th>Ação</th>
+                    </tr>
+                </thead>
+                <tbody id="tabela-movimentacoes"></tbody>
+            </table>
+        </div>
+
+        <div class="vazio" id="mensagem-vazio" style="display:none;">
+            <p>📭 Nenhuma movimentação ainda.</p>
+            <p>Adicione um valor para começar.</p>
+        </div>
+    </section>
+{% endblock %}

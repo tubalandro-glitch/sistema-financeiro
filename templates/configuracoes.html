@@ -1,0 +1,36 @@
+{% extends 'layout.html' %}
+
+{% block title %}Configurações - Dashboard Financeiro{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <div>
+            <span class="label-top">Configurações</span>
+            <h2>Personalize o seu ambiente</h2>
+            <p class="texto-pequeno">Aqui você escolhe o tema e configura seu painel para uso diário.</p>
+        </div>
+    </div>
+
+    <section class="configuracoes-secao">
+        <div class="card">
+            <div class="card-info">
+                <p class="card-label">Tema</p>
+                <h3>Tema escuro e claro</h3>
+                <p class="texto-pequeno">O sistema salva a sua preferência automaticamente no navegador.</p>
+                <button id="btnTemaConfig" type="button" class="btn-primario">Alternar tema</button>
+            </div>
+        </div>
+
+        <div class="card card-dicas">
+            <div class="card-info">
+                <p class="card-label">Como funciona</p>
+                <ul class="lista-simples">
+                    <li><strong>localStorage</strong> guarda seu tema no navegador.</li>
+                    <li><strong>JavaScript</strong> altera o <code>data-theme</code> no HTML.</li>
+                    <li><strong>CSS</strong> usa variáveis para trocar as cores.</li>
+                    <li><strong>Próxima visita</strong> a página abre com seu tema escolhido.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+{% endblock %}

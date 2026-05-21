@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Dashboard Financeiro{% endblock %}</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/tema.css') }}">
+    {% block head_extra %}{% endblock %}
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="logo">
+                <h1>Financeiro</h1>
+                <p>Seu controle real</p>
+            </div>
+
+            <nav class="menu">
+                <ul>
+                    <li><a href="{{ url_for('home') }}" class="{{ 'ativo' if active_page == 'dashboard' else '' }}">Dashboard</a></li>
+                    <li><a href="{{ url_for('relatorios') }}" class="{{ 'ativo' if active_page == 'relatorios' else '' }}">Relatórios</a></li>
+                    <li><a href="{{ url_for('configuracoes') }}" class="{{ 'ativo' if active_page == 'configuracoes' else '' }}">Configurações</a></li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button id="btnTema" type="button" class="btn-terciario">🌙 Alternar tema</button>
+            </div>
+        </aside>
+
+        <main class="conteudo">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/tema.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block body_extra %}{% endblock %}
+</body>
+</html>

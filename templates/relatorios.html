@@ -1,0 +1,163 @@
+{% extends 'layout.html' %}
+
+{% block title %}Relatórios - Dashboard Financeiro{% endblock %}
+
+{% block head_extra %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <div>
+            <span class="label-top">Relatórios</span>
+            <h2>Resumo financeiro mensal</h2>
+            <p class="texto-pequeno">Use os filtros para ver o que importa e acompanhe as categorias mais gastas.</p>
+        </div>
+    </div>
+
+    <section class="filtros">
+        <form method="get" class="formulario-filtros">
+            <div class="form-group">
+                <label for="mes">Filtrar por mês</label>
+                <input type="month" id="mes" name="mes" value="{{ filtro_mes }}">
+            </div>
+            <div class="form-group">
+                <label for="categoria">Filtrar por categoria</label>
+                <select id="categoria" name="categoria">
+                    <option value="">Todos</option>
+                    {% for cat in categorias %}
+                        <option value="{{ cat }}" {% if filtro_categoria == cat %}selected{% endif %}>{{ cat }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group botao-filtro">
+                <button type="submit" class="btn-primario">Aplicar filtro</button>
+            </div>
+        </form>
+    </section>
+
+    <section class="cards-stats relatorio-cards">
+        <article class="card card-saldo">
+            <div class="card-info">
+                <p class="card-label">Saldo atual</p>
+                <p class="card-valor">R$ {{ '{:.2f}'.format(saldo).replace('.', ',') }}</p>
+            </div>
+        </article>
+        <article class="card card-entrada">
+            <div class="card-info">
+                <p class="card-label">Total de ganhos</p>
+                <p class="card-valor">R$ {{ '{:.2f}'.format(total_entradas).replace('.', ',') }}</p>
+            </div>
+        </article>
+        <article class="card card-gasto">
+            <div class="card-info">
+                <p class="card-label">Total de gastos</p>
+                <p class="card-valor">R$ {{ '{:.2f}'.format(total_gastos).replace('.', ',') }}</p>
+            </div>
+        </article>
+        <article class="card card-info-pequeno">
+            <div class="card-info">
+                <p class="card-label">Movimentações</p>
+                <p class="card-valor">{{ total_movimentacoes }}</p>
+            </div>
+        </article>
+        <article class="card card-info-pequeno">
+            <div class="card-info">
+                <p class="card-label">Categoria com mais gastos</p>
+                <p class="card-valor">{{ categoria_mais_gastos }}</p>
+            </div>
+        </article>
+    </section>
+
+    <section class="graficos">
+        <div class="grafico-card">
+            <h3>Gastos por categoria</h3>
+            <canvas id="grafico-categoria"></canvas>
+        </div>
+
+        <div class="grafico-card">
+            <h3>Entradas x Gastos por categoria</h3>
+            <canvas id="grafico-tipos"></canvas>
+        </div>
+    </section>
+
+    <section class="categoria-comparacao">
+        <div class="section-header">
+            <h3>Comparação por categoria</h3>
+            <p class="texto-pequeno">Veja quanto entrou e saiu em cada categoria.</p>
+        </div>
+
+        {% if categoria_comparacao %}
+            <div class="tabela-container">
+                <table class="tabela">
+                    <thead>
+                        <tr>
+                            <th>Categoria</th>
+                            <th>Entradas</th>
+                            <th>Gastos</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in categoria_comparacao %}
+                            <tr>
+                                <td>{{ item.categoria }}</td>
+                                <td>R$ {{ '{:.2f}'.format(item.entrada).replace('.', ',') }}</td>
+                                <td>R$ {{ '{:.2f}'.format(item.gasto).replace('.', ',') }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="vazio">
+                <p>📭 Nenhum dado por categoria ainda.</p>
+                <p>Adicione movimentações para gerar o gráfico.</p>
+            </div>
+        {% endif %}
+    </section>
+
+    <section class="movimentacoes-secao">
+        <div class="section-header">
+            <h3>Últimas movimentações</h3>
+            <p class="texto-pequeno">Ordenadas da mais recente para a mais antiga.</p>
+        </div>
+
+        {% if movimentacoes %}
+            <div class="tabela-container">
+                <table class="tabela">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Tipo</th>
+                            <th>Categoria</th>
+                            <th>Descrição</th>
+                            <th>Valor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for mov in movimentacoes %}
+                            <tr class="{{ 'linha-entrada' if mov.tipo == 'ENTRADA' else 'linha-gasto' }}">
+                                <td>{{ mov.data[8:10] ~ '/' ~ mov.data[5:7] ~ '/' ~ mov.data[0:4] }}</td>
+                                <td>{{ 'Entrada' if mov.tipo == 'ENTRADA' else 'Gasto' }}</td>
+                                <td>{{ mov.categoria }}</td>
+                                <td>{{ mov.descricao or '-' }}</td>
+                                <td class="valor">R$ {{ '{:.2f}'.format(mov.valor).replace('.', ',') }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="vazio">
+                <p>📭 Nenhum dado para mostrar</p>
+                <p>Adicione movimentações no Dashboard e retorne aqui.</p>
+            </div>
+        {% endif %}
+    </section>
+{% endblock %}
+
+{% block body_extra %}
+    <script id="dados-categoria" type="application/json">{{ categoria_gastos | tojson }}</script>
+    <script id="dados-categoria-comparacao" type="application/json">{{ categoria_comparacao | tojson }}</script>
+    <script src="{{ url_for('static', filename='js/relatorios.js') }}"></script>
+{% endblock %}

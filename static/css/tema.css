@@ -1,0 +1,97 @@
+/* ======================================
+   SISTEMA DE TEMAS - VARIÁVEIS CSS
+   ======================================
+   
+   Este arquivo define as CORES do projeto.
+   Usa CSS variables (variáveis) que podem ser
+   mudadas com um clique!
+   
+   COMO FUNCIONA:
+   1. Define :root { --cor-fundo: ... }
+   2. Depois [data-theme="claro"] { --cor-fundo: outro }
+   3. Quando JavaScript muda data-theme, cores mudam!
+   
+   ====================================== */
+
+/* ======================================
+   TEMA PADRÃO: ESCURO
+   ======================================
+   
+   Este é o tema que aparece quando abre a página.
+   É definido em :root (raiz do documento)
+*/
+
+:root {
+    /* CORES PRINCIPAIS */
+    --cor-fundo-primaria: #0f0f1e;    /* Preto azulado escuro */
+    --cor-fundo-secundaria: #1a1a2e;  /* Preto azulado menos escuro */
+    --cor-fundo-terciaria: #16213e;   /* Azul escuro */
+    
+    /* CORES DE TEXTO */
+    --cor-texto-primaria: #e0e0e0;    /* Cinza claro */
+    --cor-texto-secundaria: #888;     /* Cinza médio */
+    
+    /* CORES DE DESTAQUE */
+    --cor-primaria: #00d4ff;          /* Azul brilhante */
+    --cor-sucesso: #2ed573;           /* Verde */
+    --cor-perigo: #ff4757;            /* Vermelho */
+    --cor-aviso: #ffa502;             /* Laranja */
+    
+    /* CORES DE ENTRADA/SAÍDA */
+    --cor-entrada: #2ed573;           /* Verde (dinheiro que entra) */
+    --cor-saida: #ff4757;             /* Vermelho (dinheiro que sai) */
+    
+    /* CORES DE BORDA E SOMBRA */
+    --cor-borda: #444;
+    --cor-sombra: rgba(0, 0, 0, 0.3);
+    
+    /* TRANSIÇÕES */
+    --transicao: 0.3s ease;
+}
+
+/* ======================================
+   TEMA CLARO
+   ======================================
+   
+   Quando HTML tem: data-theme="claro"
+   TODAS as variáveis mudam!
+*/
+
+[data-theme="claro"] {
+    /* CORES PRINCIPAIS */
+    --cor-fundo-primaria: #ffffff;     /* Branco puro */
+    --cor-fundo-secundaria: #f5f5f5;   /* Cinza muito claro */
+    --cor-fundo-terciaria: #eeeeee;    /* Cinza claro */
+    
+    /* CORES DE TEXTO */
+    --cor-texto-primaria: #333333;     /* Cinza escuro (texto) */
+    --cor-texto-secundaria: #999;      /* Cinza médio */
+    
+    /* CORES DE DESTAQUE */
+    --cor-primaria: #0066cc;           /* Azul escuro */
+    --cor-sucesso: #28a745;            /* Verde mais escuro */
+    --cor-perigo: #dc3545;             /* Vermelho mais escuro */
+    --cor-aviso: #fd7e14;              /* Laranja mais escuro */
+    
+    /* CORES DE ENTRADA/SAÍDA */
+    --cor-entrada: #28a745;
+    --cor-saida: #dc3545;
+    
+    /* CORES DE BORDA */
+    --cor-borda: #ddd;
+    --cor-sombra: rgba(0, 0, 0, 0.1);
+}
+
+/* ======================================
+   COMO USAR ESTAS VARIÁVEIS
+   ======================================
+   
+   No style.css, sempre use:
+   
+   background-color: var(--cor-fundo-primaria);
+   color: var(--cor-texto-primaria);
+   border-color: var(--cor-borda);
+   box-shadow: 0 4px 12px var(--cor-sombra);
+   
+   Quando data-theme muda, tudo muda automaticamente!
+*/
